@@ -1,10 +1,10 @@
 {
-    "name": "kriswallsmith/assetic",
+    "name": "igorgoroshit/assetic",
     "description": "Asset Management for PHP",
     "keywords": [ "assets", "compression", "minification" ],
     "homepage": "https://github.com/kriswallsmith/assetic",
     "type": "library",
-    "version": "7.0.0",
+    "version": "7.1.0",
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +15,7 @@
     ],
 
     "require": {
-        "php": "~7.2|~7.4|~8.0"
+        "php": "~7.2|~7.4|~8.0|~8.1"
     },
 
     "autoload": {
@@ -32,7 +32,7 @@
 
     "extra": {
         "branch-alias": {
-           
+            "dev-master": "7.1.0"
         }
     }
 }
