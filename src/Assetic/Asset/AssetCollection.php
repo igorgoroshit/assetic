@@ -40,9 +40,9 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
      * @param string $sourceRoot The root directory
      * @param array  $vars
      */
-    public function __construct($assets = array(), $filters = array(), $sourceRoot = null, array $vars = array())
+    public function __construct($assets = [], $filters = [], $sourceRoot = null, array $vars = [])
     {
-        $this->assets = array();
+        $this->assets = [];
         foreach ($assets as $asset) {
             $this->add($asset);
         }
@@ -51,7 +51,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
         $this->sourceRoot = $sourceRoot;
         $this->clones = new \SplObjectStorage();
         $this->vars = $vars;
-        $this->values = array();
+        $this->values = [];
     }
 
     public function __clone()
@@ -134,7 +134,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     public function load(FilterInterface $additionalFilter = null)
     {
         // loop through leaves and load each asset
-        $parts = array();
+        $parts = [];
         foreach ($this as $asset) {
             $asset->load($additionalFilter);
             $parts[] = $asset->getContent();
@@ -146,7 +146,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     public function dump(FilterInterface $additionalFilter = null)
     {
         // loop through leaves and dump each asset
-        $parts = array();
+        $parts = [];
         foreach ($this as $asset) {
             $parts[] = $asset->dump($additionalFilter);
         }
@@ -212,7 +212,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     /**
      * Returns an iterator for looping recursively over unique leaves.
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new \RecursiveIteratorIterator(new AssetCollectionFilterIterator(new AssetCollectionIterator($this, $this->clones)));
     }

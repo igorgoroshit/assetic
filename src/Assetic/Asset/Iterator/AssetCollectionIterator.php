@@ -13,6 +13,8 @@ namespace Assetic\Asset\Iterator;
 
 use Assetic\Asset\AssetCollectionInterface;
 
+use RecursiveIterator;
+use SplObjectStorage;
 /**
  * Iterates over an asset collection.
  *
@@ -21,7 +23,7 @@ use Assetic\Asset\AssetCollectionInterface;
  *
  * @author Kris Wallsmith <kris.wallsmith@gmail.com>
  */
-class AssetCollectionIterator implements \RecursiveIterator
+class AssetCollectionIterator implements RecursiveIterator
 {
     private $assets;
     private $filters;
@@ -29,12 +31,15 @@ class AssetCollectionIterator implements \RecursiveIterator
     private $output;
     private $clones;
 
-    public function __construct(AssetCollectionInterface $coll, \SplObjectStorage $clones)
+    public function __construct(
+        AssetCollectionInterface $coll, 
+        SplObjectStorage $clones
+    )
     {
         $this->assets  = $coll->all();
         $this->filters = $coll->getFilters();
         $this->vars    = $coll->getVars();
-        $this->output  = $coll->getTargetPath();
+        $this->output  = $coll->getTargetPath() ?? '';
         $this->clones  = $clones;
 
         if (false === $pos = strrpos($this->output, '.')) {
@@ -51,7 +56,7 @@ class AssetCollectionIterator implements \RecursiveIterator
      *
      * @return \Assetic\Asset\AssetInterface
      */
-    public function current($raw = false)
+    public function current($raw = false) : mixed
     {
         $asset = current($this->assets);
 
@@ -81,27 +86,27 @@ class AssetCollectionIterator implements \RecursiveIterator
         return $clone;
     }
 
-    public function key()
+    public function key() : mixed
     {
         return key($this->assets);
     }
 
-    public function next()
+    public function next() : void
     {
-        return next($this->assets);
+        next($this->assets);
     }
 
-    public function rewind()
+    public function rewind() : void
     {
-        return reset($this->assets);
+        reset($this->assets);
     }
 
-    public function valid()
+    public function valid() : bool
     {
         return false !== current($this->assets);
     }
 
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return current($this->assets) instanceof AssetCollectionInterface;
     }
@@ -109,7 +114,7 @@ class AssetCollectionIterator implements \RecursiveIterator
     /**
      * @uses current()
      */
-    public function getChildren()
+    public function getChildren() : ?RecursiveIterator
     {
         return new self($this->current(), $this->clones);
     }
